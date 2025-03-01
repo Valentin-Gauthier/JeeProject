@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/login.css">
+    <title>JeeProject</title>
+</head>
+<body>
+<div class="login-container">
+    <div class="login-form">
+        <h2>Inscription</h2>
+        <form method="POST" action="/Sign/Inscription">
+            <div class="input-group">
+                <label for="nom">Nom</label>
+                <input type="text" id="nom" name="nom" required>
+                <p class="error-message" th:if="${erreurs != null} and ${erreurs['e_nom'] != null}" th:text="${erreurs['e_nom']}"></p>
+            </div>
+
+            <div class="input-group">
+                <label for="prenom">Prénom</label>
+                <input type="text" id="prenom" name="prenom" required>
+                <p class="error-message" th:if="${erreurs != null} and ${erreurs['e_prenom'] != null}" th:text="${erreurs['e_prenom']}"></p>
+            </div>
+
+            <div class="input-group">
+                <label for="age">Âge</label>
+                <input type="number" id="age" name="age" required>
+                <p class="error-message" th:if="${erreurs != null} and ${erreurs['e_age'] != null}" th:text="${erreurs['e_age']}"></p>
+            </div>
+
+            <div class="input-group">
+                <label for="genre">Genre</label>
+                <select id="genre" name="genre" required>
+                    <option value="Homme">Homme</option>
+                    <option value="Femme">Femme</option>
+                    <option value="Autre">Autre</option>
+                </select>
+                <p class="error-message" th:if="${erreurs != null} and ${erreurs['e_genre'] != null}" th:text="${erreurs['e_genre']}"></p>
+            </div>
+
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email" required>
+                <p class="error-message" th:if="${erreurs != null} and ${erreurs['e_email'] != null}" th:text="${erreurs['e_email']}"></p>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="password" required>
+                <p class="error-message" th:if="${erreurs != null} and ${erreurs['e_password'] != null}" th:text="${erreurs['e_password']}"></p>
+            </div>
+
+            <button type="submit" class="btn">S'inscrire</button>
+        </form>
+        <a href="/Login">déjà un compte ?</a>
+    </div>
+</div>
+
+</body>
+</html>

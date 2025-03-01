@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/programs.css">
+    <title>JeeProject</title>
+</head>
+<body>
+    <!-- Barre de Navigation -->
+    <div class="navbar">
+        <nav>
+            <h2>JeeProject</h2>
+
+            <ul class="nav_links">
+                <li><a href="/Home">Accueil</a></li>
+                <li><a href="/Programs">Mes Programmes</a></li>
+                <li><a href="/Recommendations">Recommandations</a></li>
+            </ul>
+
+            <div class="log_buttons">
+                <a href="/Login" class="btn" th:if="${session.utilisateur == null}">Connexion</a>
+                <a href="/Login/Deconnexion" class="logout_btn" th:if="${session.utilisateur != null}">Déconnexion</a>
+                <a href="/Profil" class="btn" th:if="${session.utilisateur != null}">Mon Compte</a>
+            </div>
+        </nav>
+    </div>
+
+<div class="main">
+    <h1>Vos programmes</h1>
+
+    <!-- Liste des programmes -->
+    <div class="programmes_container" th:if="${not #lists.isEmpty(programmes)}">
+        <div class="programme_card" th:each="programmeWithActivite : ${programmes}">
+            <div class="programme_header">
+                <h3>Programme #<span th:text="${programmeWithActivite.programmesId}"></span></h3>
+                <form action="/Programs/deleteProgramme" method="POST">
+                    <input type="hidden" name="programmeId" th:value="${programmeWithActivite.programmesId}">
+                    <button type="submit" class="btn delete_btn">Supprimer</button>
+                </form>
+            </div>
+
+            <!-- Activités -->
+            <div class="activities_container" th:if="${not #lists.isEmpty(programmeWithActivite.activites)}">
+                <h4>Activités associées</h4>
+                <div class="activity_list">
+                    <div class="activity_item" th:each="activite : ${programmeWithActivite.activites}">
+                        <a th:text="${activite.nom}" th:href="@{/Activity(id=${activite.activiteId})}" class="activity_link"></a>
+                        <form action="/Programs/deleteActiviteFromProgramme" method="POST">
+                            <input type="hidden" name="activiteId" th:value="${activite.activiteId}">
+                            <input type="hidden" name="programmeId" th:value="${programmeWithActivite.programmesId}">
+                            <button type="submit" class="delete_icon">×</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Création nouveau programme -->
+        <div class="creat_programme programme_card">
+            <h3>Commencer un nouveau programme</h3>
+            <form action="/Programs/createProgramme" method="POST">
+                <button type="submit" class="btn create">Créer maintenant</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Etat vide -->
+    <div class="programmes_container vide" th:if="${#lists.isEmpty(programmes)}">
+        <div class="programme_card empty_state">
+            <p>Vous n'avez aucun programme actif</p>
+            <div class="creat_programme">
+                <h3>Commencez dès maintenant</h3>
+                <form action="/Programs/createProgramme" method="POST">
+                    <button type="submit" class="btn create">Créer mon premier programme</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

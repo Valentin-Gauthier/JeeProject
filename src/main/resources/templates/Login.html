@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/login.css">
+  <title>JeeProject</title>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-form">
+      <h2>Connexion</h2>
+
+      <div th:if="${message}" class="error-message">
+        <p th:text="${message}"></p>
+      </div>
+
+      <form method="POST" action="/Login/Connexion">
+        <div class="input-group">
+          <label for="email">Email</label>
+          <input type="text" id="email" name="email" autocomplete="off" required>
+        </div>
+        <div class="input-group">
+          <label for="password">Mot de passe</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn">Se connecter</button>
+      </form>
+      <a href="/Sign">pas de compte ?</a>
+    </div>
+  </div>
+</body>
+</html>

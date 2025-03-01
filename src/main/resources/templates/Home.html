@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/home.css">
+    <title>JeeProject</title>
+</head>
+<body>
+    <!-- Barre de Navigation -->
+    <div class="navbar">
+        <nav>
+            <h2>JeeProject</h2>
+
+            <ul class="nav_links">
+                <li><a href="/Home">Accueil</a></li>
+                <li><a href="/Programs">Mes Programmes</a></li>
+                <li><a href="/Recommendations">Recommandations</a></li>
+            </ul>
+
+            <div class="log_buttons">
+                <a href="/Login" class="btn" th:if="${session.utilisateur == null}">Connexion</a>
+                <a href="/Login/Deconnexion" class="logout_btn" th:if="${session.utilisateur != null}">Déconnexion</a>
+                <a href="/Profil" class="btn" th:if="${session.utilisateur != null}">Mon Compte</a>
+            </div>
+        </nav>
+    </div>
+
+
+    <!-- Barre de Recherche -->
+    <div class="search_container">
+        <form action="/Home/Search">
+            <div class="search">
+                <input type="text" id="recherche" name="recherche" placeholder="Rechercher une activité...">
+                <button type="submit">Rechercher</button>
+            </div>
+        </form>
+    </div>
+
+
+    <!-- Affichage des Activités -->
+    <div class="activities_container">
+        <h1>Voici nos Activités</h1>
+        <div class="activities_grid" th:if="${not #lists.isEmpty(activites)}">
+            <div class="activities_card" th:each="activite : ${activites}">
+                <div class="top_card">
+                    <h3 th:text="${activite.activite.nom}"></h3>
+                    <span class="rating" th:text="${activite.moyenne} + '★'"></span>
+                </div>
+                <p class="description" th:text="${#strings.abbreviate(activite.activite.description, 100)}"></p>
+                <p class="address" th:text="${activite.activite.address}"></p>
+
+                <!-- affichage des pathologies -->
+                <div class="pathologies_list" th:if="${not #lists.isEmpty(activite.pathologies)}">
+                    <span class="pathology_tag" th:each="pathologie : ${activite.pathologies}" th:text="${pathologie.nom}"></span>
+                </div>
+                <!-- Liens  -->
+                <div class="card_actions">
+                    <a th:href="@{/Activity(id=${activite.activite.activiteId})}" class="btn details_btn">Voir détails</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Si aucune Activité trouvé -->
+    <div class="no_activity" th:if="${#lists.isEmpty(activites)}">
+        <p>Nous avons aucune activités qui correspond.</p>
+        <a href="/Home" class="btn">Retour à l'Acceuil</a>
+    </div>
+
+</body>
+</html>

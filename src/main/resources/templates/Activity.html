@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/activity.css">
+    <title>JeeProject</title>
+</head>
+<body>
+    <!-- Barre de Navigation -->
+    <div class="navbar">
+        <nav>
+            <h2>JeeProject</h2>
+
+            <ul class="nav_links">
+                <li><a href="/Home">Accueil</a></li>
+                <li><a href="/Programs">Mes Programmes</a></li>
+                <li><a href="/Recommendations">Recommandations</a></li>
+            </ul>
+
+            <div class="log_buttons">
+                <a href="/Login" class="btn" th:if="${session.utilisateur == null}">Connexion</a>
+                <a href="/Login/Deconnexion" class="logout_btn" th:if="${session.utilisateur != null}">Déconnexion</a>
+                <a href="/Profil" class="btn" th:if="${session.utilisateur != null}">Mon Compte</a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Affichage des Activités -->
+    <div class="activities_container">
+        <h1>Voici nos Activités</h1>
+        <div class="activities_grid" th:if="${not #lists.isEmpty(activite)}">
+            <div class="activities_card">
+                <div class="top_card">
+                    <h1 th:text="${activite.activite.nom}"></h1>
+                    <span class="rating_note" th:text="${activite.moyenne} + '★'"></span>
+                </div>
+                <p class="description" th:text="${activite.activite.description}"></p>
+                <p class="address" th:text="${activite.activite.address}"></p>
+
+                <!-- affichage des pathologies -->
+                <div class="pathologies_list" th:if="${not #lists.isEmpty(activite.pathologies)}">
+                    <span class="pathology_tag" th:each="pathologie : ${activite.pathologies}" th:text="${pathologie.nom}"></span>
+                </div>
+
+                <div class="buttons">
+                    <!-- Ajouter une Evaluation-->
+                    <button th:if="${session.utilisateur != null && utilisateurActivite != null}" class="btn add_program_btn" onclick="openRatingPopup()">Noter cette activité</button>
+
+                    <!-- Bouton Ajouter à un programme -->
+                    <button th:if="${session.utilisateur != null}" class="btn add_program_btn" onclick="openPopup()">Ajouter à un programme</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Si aucune Activité trouvé -->
+    <div class="no_activity" th:if="${#lists.isEmpty(activite)}">
+        <p>Nous avons aucune activités qui correspond.</p>
+        <a href="/Home" class="btn">Retour à l'Acceuil</a>
+    </div>
+
+
+    <!-- Popup de sélection du programme -->
+    <div class="popup" id="popup">
+        <div class="popup_content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <h3>Ajouter cette activité à un programme</h3>
+            <div th:if="${not #lists.isEmpty(programmes)}">
+                <form action="/Activity/addActiviteForProgramme" method="POST">
+                    <input type="hidden" name="activiteId" th:value="${activite.activite.activiteId}">
+                    <select name="programmeId">
+                        <option th:each="programme : ${programmes}" th:value="${programme.programmesId}" name="programmeId" th:text="${'Programme ' + programme.programmesId}"></option>
+                    </select>
+                    <button type="submit">Ajouter</button>
+                </form>
+            </div>
+            <p th:if="${#lists.isEmpty(programmes)}">Vous n'avez aucun programme...</p>
+        </div>
+    </div>
+
+    <!-- Popup de notation -->
+    <div class="popup" id="ratingPopup">
+        <div class="popup_content">
+            <span class="close" onclick="closeRatingPopup()">&times;</span>
+            <h3>Noter cette activité</h3>
+            <form action="/Activity/addEvaluation" method="POST">
+                <input type="hidden" name="activiteId" th:value="${activite.activite.activiteId}">
+                <div class="rating_input">
+                    <input type="number" name="note" step="0.1" min="0" max="5" placeholder="Entre 0 et 5" required>
+                    <span>/5</span>
+                </div>
+                <button type="submit" class="btn">Envoyer la note</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openPopup() {
+            document.getElementById("popup").style.display = "flex";
+        }
+
+        function openRatingPopup() {
+            document.getElementById("ratingPopup").style.display = "flex";
+        }
+
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+
+        function closeRatingPopup() {
+            document.getElementById("ratingPopup").style.display = "none";
+        }
+    </script>
+</body>
+</html>

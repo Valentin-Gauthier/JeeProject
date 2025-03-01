@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/recommendation.css">
+    <title>JeeProject</title>
+</head>
+<body>
+    <!-- Barre de Navigation -->
+    <div class="navbar">
+        <nav>
+            <h2>JeeProject</h2>
+
+            <ul class="nav_links">
+                <li><a href="/Home">Accueil</a></li>
+                <li><a href="/Programs">Mes Programmes</a></li>
+                <li><a href="/Recommendations">Recommandations</a></li>
+            </ul>
+
+            <div class="log_buttons">
+                <a href="/Login" class="btn" th:if="${session.utilisateur == null}">Connexion</a>
+                <a href="/Login/Deconnexion" class="logout_btn" th:if="${session.utilisateur != null}">Déconnexion</a>
+                <a href="/Profil" class="btn" th:if="${session.utilisateur != null}">Mon Compte</a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Affichage des Activités -->
+    <div class="activities_container">
+        <h1>Voici nos Recommandations</h1>
+        <p class="explications">Elles sont basées sur vos pathologies</p>
+        <div class="activities_grid" th:if="${not #lists.isEmpty(recommendations)}">
+            <div class="activities_card" th:each="activite : ${recommendations}">
+                <div class="top_card">
+                    <h3 th:text="${activite.activite.nom}"></h3>
+                    <span class="rating" th:text="${activite.moyenne} + '★'"></span>
+                </div>
+                <p class="description" th:text="${#strings.abbreviate(activite.activite.description, 100)}"></p>
+                <p class="address" th:text="${activite.activite.address}"></p>
+
+                <!-- affichage des pathologies -->
+                <div class="pathologies_list" th:if="${not #lists.isEmpty(activite.pathologies)}">
+                    <span class="pathology_tag" th:each="pathologie : ${activite.pathologies}" th:text="${pathologie.nom}"></span>
+                </div>
+                <!-- Liens  -->
+                <div class="card_actions">
+                    <a th:href="@{/Activity(id=${activite.activite.activiteId})}" class="btn details_btn">Voir détails</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Si aucune Activité trouvé -->
+    <div class="no_activity" th:if="${#lists.isEmpty(recommendations)}">
+        <p>Nous avons aucune activités qui correspond.</p>
+        <a href="/Home" class="btn">Retour à l'Acceuil</a>
+    </div>
+
+</body>
+</html>

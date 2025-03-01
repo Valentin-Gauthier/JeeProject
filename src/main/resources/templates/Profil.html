@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/profil.css">
+    <title>JeeProject</title>
+</head>
+<body>
+    <!-- Barre de Navigation -->
+    <div class="navbar">
+        <nav>
+            <h2>JeeProject</h2>
+
+            <ul class="nav_links">
+                <li><a href="/Home">Accueil</a></li>
+                <li><a href="/Programs">Mes Programmes</a></li>
+                <li><a href="/Recommendations">Recommandations</a></li>
+            </ul>
+
+            <div class="log_buttons">
+                <a href="/Login" class="btn" th:if="${session.utilisateur == null}">Connexion</a>
+                <a href="/Login/Deconnexion" class="logout_btn" th:if="${session.utilisateur != null}">Déconnexion</a>
+                <a href="/Profil" class="btn" th:if="${session.utilisateur != null}">Mon Compte</a>
+            </div>
+        </nav>
+    </div>
+
+
+    <!-- Conteneur principal -->
+    <div class="profile_wrapper">
+        <!-- Infos utilisateur  -->
+        <div class="profile_container">
+            <h2>Bienvenue, <span th:text="${session.utilisateur.prenom}"></span></h2>
+            <p>Vos Pathologies :</p>
+
+            <!-- Affichage des pathologies -->
+            <div class="pathologies_container" th:if="${not #lists.isEmpty(pathologiesUtilisateur)}">
+                <div th:each="pathologie : ${pathologiesUtilisateur}">
+                    <a th:text="${pathologie.nom}" th:href="@{/Pathologie(id=${pathologie.pathologieId})}"></a>
+                    <form method="POST" action="/Profil/deletePathologie">
+                        <input type="hidden" name="pathologieId" th:value="${pathologie.pathologieId}">
+                        <button type="submit" class="delete-icon">×</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recherche des pathologies  -->
+        <div class="pathologies_form">
+            <h3>Rechercher une Pathologie</h3>
+            <form action="/Profil/pathologie" method="GET">
+                <input type="text" id="pathologieName" name="pathologieName" placeholder="Rechercher une Pathologie ...">
+                <button type="submit">Rechercher</button>
+            </form>
+
+            <!-- Résultats de la recherche -->
+            <div class="pathologies_search" th:if="${not #lists.isEmpty(pathologies)}">
+                <div th:each="pathologie : ${pathologies}">
+                    <p th:text="${pathologie.nom}"></p>
+                    <form method="POST" action="/Profil/addPathologie">
+                        <input type="hidden" name="pathologieId" th:value="${pathologie.pathologieId}">
+                        <button type="submit">Ajouter</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Message si aucune pathologie trouvée -->
+            <div class="pathologies_search vide" th:if="${#lists.isEmpty(pathologies)}">
+                <p>Aucune pathologie trouvé ...</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
