@@ -135,7 +135,14 @@ nav ul li a:hover{
     font-size: 1.2rem;
     color: #2d3436;
 }
-
+.rating{
+    background: #ffeaa7;
+    color: #e17055;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
 .delete_btn {
     background: #ff4757;
     border: none;

@@ -84,6 +84,7 @@
         <div class="popup_content">
             <span class="close" onclick="closeRatingPopup()">&times;</span>
             <h3>Noter cette activité</h3>
+            <p th:if="${note_utilisateur != null}" th:text=" 'Votre note : ' + ${note_utilisateur} + '★'"></p>
             <form action="/Activity/addEvaluation" method="POST">
                 <input type="hidden" name="activiteId" th:value="${activite.activite.activiteId}">
                 <div class="rating_input">

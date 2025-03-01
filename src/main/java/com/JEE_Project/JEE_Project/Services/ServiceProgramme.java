@@ -3,6 +3,7 @@ package com.JEE_Project.JEE_Project.Services;
 import com.JEE_Project.JEE_Project.Models.Activite;
 import com.JEE_Project.JEE_Project.Models.Programme;
 import com.JEE_Project.JEE_Project.Repositories.RepoActivite;
+import com.JEE_Project.JEE_Project.Repositories.RepoEvaluation;
 import com.JEE_Project.JEE_Project.Repositories.RepoProgramme;
 import com.JEE_Project.JEE_Project.Utils.ProgrammeWithActivites;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class ServiceProgramme {
 
     @Autowired
     private RepoProgramme repoProgramme;
+    @Autowired
+    private RepoEvaluation repoEvaluation;
 
     @Transactional
     public void deleteProgramme(long programmeId) {
@@ -31,7 +34,7 @@ public class ServiceProgramme {
     }
 
     // Retourner un programmes avec toutes les activités incluse dedans
-    public List<ProgrammeWithActivites> getAllProgrammes(long id) {
+    public List<ProgrammeWithActivites> getAllProgrammes(long id, long utilisateurId) {
 
         Map<Long, ProgrammeWithActivites> programmesMap = new HashMap<>();
 
@@ -56,7 +59,21 @@ public class ServiceProgramme {
                 programmesMap.put(programmeId, p);
             }
         }
-        return new ArrayList<>(programmesMap.values());
+
+        List<ProgrammeWithActivites> programmeWithActivites = new ArrayList<>(programmesMap.values());
+
+        for(ProgrammeWithActivites p : programmeWithActivites){
+            // Recuperer la moyenne de chaque programme
+            Double moy = repoEvaluation.findMoyenneFromProgramme(p.getProgrammesId(), utilisateurId);
+            if(moy != null) {
+                moy = Math.round(moy * 10.0) / 10.0;
+                p.setMoyenne(moy);
+            }else{
+                p.setMoyenne(0);
+            }
+        }
+        return programmeWithActivites;
     }
+
 
 }

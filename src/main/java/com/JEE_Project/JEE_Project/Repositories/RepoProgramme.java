@@ -18,7 +18,7 @@ public interface RepoProgramme extends JpaRepository<Programme, Long> {
     void deleteProgramme(@Param("programmeId") long programmeId);
 
     // Recuperer les programmes de l'Utilisateur avec les activites
-    @Query("SELECT p, a FROM Programme p LEFT JOIN Programme_Activite pa ON p.programmeId = pa.programmeId LEFT JOIN Activite a ON pa.activiteId = a.activiteId WHERE p.utilisateurId = :id")
+    @Query("SELECT p, a AS moyenne_programme FROM Programme p LEFT JOIN Programme_Activite pa ON p.programmeId = pa.programmeId LEFT JOIN Activite a ON pa.activiteId = a.activiteId WHERE p.utilisateurId = :id")
     List<Object[]> findProgrammeWithActivite(@Param("id") long id);
 
 }

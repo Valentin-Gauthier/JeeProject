@@ -34,6 +34,7 @@
         <div class="programme_card" th:each="programmeWithActivite : ${programmes}">
             <div class="programme_header">
                 <h3>Programme #<span th:text="${programmeWithActivite.programmesId}"></span></h3>
+                <span class="rating" th:text="${programmeWithActivite.moyenne} + '★'"></span>
                 <form action="/Programs/deleteProgramme" method="POST">
                     <input type="hidden" name="programmeId" th:value="${programmeWithActivite.programmesId}">
                     <button type="submit" class="btn delete_btn">Supprimer</button>

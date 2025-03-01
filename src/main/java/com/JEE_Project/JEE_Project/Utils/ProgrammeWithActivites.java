@@ -9,6 +9,7 @@ public class ProgrammeWithActivites {
 
     private long programmesId;
     private List<Activite> activites = new ArrayList<>();
+    private double moyenne;
 
     public ProgrammeWithActivites() {}
 
@@ -23,4 +24,8 @@ public class ProgrammeWithActivites {
 
     public List<Activite> getActivites() { return activites; }
     public long getProgrammesId() { return programmesId; }
+    public double getMoyenne() { return moyenne; }
+
+    public void setActivites(List<Activite> activites) { this.activites = activites; }
+    public void setMoyenne(double moyenne) { this.moyenne = moyenne; }
 }

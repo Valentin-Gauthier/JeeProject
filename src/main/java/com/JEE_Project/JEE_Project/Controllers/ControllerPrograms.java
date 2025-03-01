@@ -29,7 +29,7 @@ public class ControllerPrograms {
         Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
 
         // Recuperer les programmes de l'utilisateur
-        List<ProgrammeWithActivites> programmes = serviceProgrammes.getAllProgrammes(utilisateur.getUtilisateurId());
+        List<ProgrammeWithActivites> programmes = serviceProgrammes.getAllProgrammes(utilisateur.getUtilisateurId(), utilisateur.getUtilisateurId());
         model.addAttribute("programmes", programmes);
 
         return "Programs";

@@ -17,14 +17,8 @@ public class ServiceEvaluation {
         repoEvaluation.save(evaluation);
     }
 
-    public double getMoyenneForActivite(long activiteId) {
-        Double moyenne = repoEvaluation.findMoyenneFromActivite(activiteId);
-        return (moyenne != null) ? moyenne : 0.0;
-    }
-
     public boolean evaluationExist(long utilisateurId, long activiteId) {
         int eval = repoEvaluation.findExistingEvaluation(utilisateurId, activiteId);
-        System.out.println(eval);
         return (eval != 0);
     }
 

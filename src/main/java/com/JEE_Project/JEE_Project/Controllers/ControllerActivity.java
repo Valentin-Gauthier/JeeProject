@@ -4,6 +4,7 @@ import com.JEE_Project.JEE_Project.Models.Activite;
 import com.JEE_Project.JEE_Project.Models.Evaluation;
 import com.JEE_Project.JEE_Project.Models.Programme_Activite;
 import com.JEE_Project.JEE_Project.Models.Utilisateur;
+import com.JEE_Project.JEE_Project.Repositories.RepoEvaluation;
 import com.JEE_Project.JEE_Project.Services.ServiceActivite;
 import com.JEE_Project.JEE_Project.Services.ServiceEvaluation;
 import com.JEE_Project.JEE_Project.Services.ServiceProgramme;
@@ -33,6 +34,8 @@ public class ControllerActivity {
     private ServiceProgramme serviceProgramme;
     @Autowired
     private ServiceProgramme_Activite serviceProgramme_Activite;
+    @Autowired
+    private RepoEvaluation repoEvaluation;
 
     @GetMapping("")
     public String afficherActivity(@RequestParam("id") long activiteId, Model model, HttpSession session) {
@@ -42,8 +45,14 @@ public class ControllerActivity {
 
         // Recuperer les programmes de l'utilisateur
         if(session.getAttribute("utilisateur") != null) {
-            List<ProgrammeWithActivites> programmes = serviceProgramme.getAllProgrammes(utilisateur.getUtilisateurId());
+            List<ProgrammeWithActivites> programmes = serviceProgramme.getAllProgrammes(utilisateur.getUtilisateurId(), utilisateur.getUtilisateurId());
             model.addAttribute("programmes", programmes);
+
+            // Recuperer la note de l'utilisateur
+            Evaluation note = repoEvaluation.findEvaluationByUtilisateurId(utilisateur.getUtilisateurId(), activiteId);
+            if(note != null) {
+                model.addAttribute("note_utilisateur", note.getNote());
+            }
 
             // Verifier si l'Utilisateur à cette Activite
             List<Activite> utilisateurActivite = serviceActivite.getActivitesFromUtilisateurId(utilisateur.getUtilisateurId(), activiteId);
