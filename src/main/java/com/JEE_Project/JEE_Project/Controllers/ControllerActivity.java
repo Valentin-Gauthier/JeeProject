@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-// ajout d'un commentaire
 
 @Controller
 @RequestMapping("/Activity")
@@ -42,7 +41,7 @@ public class ControllerActivity {
         model.addAttribute("activite", activite);
 
         // Recuperer les programmes de l'utilisateur
-        if(session != null && session.getAttribute("utilisateur") != null) {
+        if(session.getAttribute("utilisateur") != null) {
             List<ProgrammeWithActivites> programmes = serviceProgramme.getAllProgrammes(utilisateur.getUtilisateurId());
             model.addAttribute("programmes", programmes);
 
@@ -78,7 +77,7 @@ public class ControllerActivity {
 
     // Ajouter une activité à un programme
     @PostMapping("/addActiviteForProgramme")
-    public String addActiviteForProgramme(@RequestParam("programmeId") long programmeId,@RequestParam("activiteId") long acitiviteId ,HttpSession session, Model model) {
+    public String addActiviteForProgramme(@RequestParam("programmeId") long programmeId,@RequestParam("activiteId") long acitiviteId) {
         Programme_Activite programmesActivite = new Programme_Activite(programmeId, acitiviteId);
         serviceProgramme_Activite.addActiviteForProgramme(programmesActivite);
         return "redirect:/Activity?id=" + acitiviteId;
