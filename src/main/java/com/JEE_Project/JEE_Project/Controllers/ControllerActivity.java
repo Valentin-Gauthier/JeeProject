@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+// ajout d'un commentaire
 
 @Controller
 @RequestMapping("/Activity")
@@ -51,10 +52,6 @@ public class ControllerActivity {
                 model.addAttribute("utilisateurActivite", utilisateurActivite);
             }
         }
-
-
-
-
         return "Activity";
     }
 
