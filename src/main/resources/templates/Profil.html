@@ -37,7 +37,7 @@
             <!-- Affichage des pathologies -->
             <div class="pathologies_container" th:if="${not #lists.isEmpty(pathologiesUtilisateur)}">
                 <div th:each="pathologie : ${session.utilisateur.pathologies}">
-                    <a th:text="${pathologie.pathologie.nom}" th:href="@{/Pathologie(id=${pathologie.pathologie.pathologieId})}"></a>
+                    <p th:text="${pathologie.pathologie.nom}"></p>
                     <form method="POST" action="/Profil/deletePathologie">
                         <input type="hidden" name="pathologieId" th:value="${pathologie.pathologie.pathologieId}">
                         <button type="submit" class="delete-icon">×</button>

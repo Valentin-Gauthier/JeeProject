@@ -42,7 +42,7 @@ public class ControllerRecommendation {
             for(Activite_Pathologie ap : activite.getPathologies()) {
                 if(utilisateurPathologies.contains(ap.getPathologie())) {
                     // rajoute la moyenne
-                    score += (int) (1 + ap.getActivite().getMoyenne());
+                    score += (int) (1 + ap.getActivite().getMoyenne() * 10);
                 }
             }
             activitesScore.put(activite, score);
