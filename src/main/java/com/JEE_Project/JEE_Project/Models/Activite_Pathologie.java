@@ -9,14 +9,20 @@ public class Activite_Pathologie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private long activiteId;
-    private long pathologieId;
+
+    @ManyToOne
+    @JoinColumn(name = "activiteId")
+    private Activite activite;
+
+    @ManyToOne
+    @JoinColumn(name = "pathologieId")
+    private Pathologie pathologie;
 
     public long getId() { return id; }
-    public long getActiviteId() { return activiteId; }
-    public long getPathologieId() { return pathologieId; }
+    public Activite getActivite() { return activite; }
+    public Pathologie getPathologie() { return pathologie; }
 
     public void setId(long id) { this.id = id; }
-    public void setActiviteId(long activiteId) { this.activiteId = activiteId; }
-    public void setPathologieId(long pathologieId) {}
+    public void setActivite(Activite activite) { this.activite = activite; }
+    public void setPathologie(Pathologie pathologie) { this.pathologie = pathologie; }
 }

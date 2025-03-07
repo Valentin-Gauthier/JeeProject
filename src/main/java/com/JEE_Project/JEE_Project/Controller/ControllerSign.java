@@ -1,7 +1,13 @@
-package com.JEE_Project.JEE_Project.Controllers;
+package com.JEE_Project.JEE_Project.Controller;
 
+import com.JEE_Project.JEE_Project.Models.Evaluation;
+import com.JEE_Project.JEE_Project.Models.Programme;
 import com.JEE_Project.JEE_Project.Models.Utilisateur;
+import com.JEE_Project.JEE_Project.Models.Utilisateur_Pathologie;
+import com.JEE_Project.JEE_Project.Services.ServiceEvaluation;
+import com.JEE_Project.JEE_Project.Services.ServiceProgramme;
 import com.JEE_Project.JEE_Project.Services.ServiceUtilisateur;
+import com.JEE_Project.JEE_Project.Services.ServiceUtilisateur_Pathologie;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -22,6 +29,13 @@ public class ControllerSign {
     @Autowired
     private ServiceUtilisateur serviceUtilisateur;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+    @Autowired
+    private ServiceEvaluation serviceEvaluation;
+    @Autowired
+    private ServiceProgramme serviceProgramme;
+    @Autowired
+    private ServiceUtilisateur_Pathologie serviceUtilisateur_Pathologie;
 
 
     @GetMapping("")
@@ -75,8 +89,17 @@ public class ControllerSign {
                 // Hasher le mdp
                 utilisateur.setPassword(encoder.encode(utilisateur.getPassword()));
 
-
                 serviceUtilisateur.saveUtilisateur(utilisateur);
+
+                // Charger l'utilisateur avec toutes ses données
+                List<Evaluation> evals = serviceEvaluation.getEvaluations(utilisateur);
+                List<Programme> programmes = serviceProgramme.getProgrammes(utilisateur);
+                List<Utilisateur_Pathologie> pathologies = serviceUtilisateur_Pathologie.getPathologies(utilisateur);
+                utilisateur.setEvaluations(evals);
+                utilisateur.setProgrammes(programmes);
+                utilisateur.setPathologies(pathologies);
+
+
 
                 // enrregistre dans une session
                 session.setAttribute("utilisateur", utilisateur);

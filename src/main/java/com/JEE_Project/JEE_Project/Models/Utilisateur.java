@@ -2,20 +2,34 @@ package com.JEE_Project.JEE_Project.Models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "Utilisateurs")
 public class Utilisateur {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // precise que MySQL support l'auto incrementation
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "utilisateurId")
     private long utilisateurId;
+
     private String nom;
     private String prenom;
     private int age;
     private String genre;
     private String email;
     private String password;
+
+    @OneToMany(mappedBy = "utilisateur")
+    private List<Evaluation> evaluations;
+
+    @OneToMany(mappedBy = "utilisateur")
+    private List<Programme> programmes;
+
+    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
+    private List<Utilisateur_Pathologie> pathologies;
+
+
 
     // CONSTRUCTOR
     public Utilisateur() {}
@@ -37,6 +51,9 @@ public class Utilisateur {
     public void setPassword(String password) {this.password = password;}
     public void setAge(int age) {this.age = age;}
     public void setGenre(String  genre) {this.genre = genre;}
+    public void setEvaluations(List<Evaluation> evaluations) { this.evaluations = evaluations;}
+    public void setProgrammes(List<Programme> programmes) { this.programmes = programmes;}
+    public void setPathologies(List<Utilisateur_Pathologie> pathologies) { this.pathologies = pathologies;}
 
     public long getUtilisateurId() { return utilisateurId;}
     public String getNom() {return nom;}
@@ -45,4 +62,7 @@ public class Utilisateur {
     public String getPassword() {return password;}
     public int getAge() {return age;}
     public String getGenre() {return genre;}
+    public List<Evaluation> getEvaluations() {return evaluations;}
+    public List<Programme> getProgrammes() {return programmes;}
+    public List<Utilisateur_Pathologie> getPathologies() {return pathologies;}
 }

@@ -31,24 +31,25 @@
 
     <!-- Liste des programmes -->
     <div class="programmes_container" th:if="${not #lists.isEmpty(programmes)}">
-        <div class="programme_card" th:each="programmeWithActivite : ${programmes}">
+        <div class="programme_card" th:each="programme : ${programmes}">
             <div class="programme_header">
-                <h3>Programme #<span th:text="${programmeWithActivite.programmesId}"></span></h3>
+                <h3>Programme #<span th:text="${programme.programmeId}"></span></h3>
+                <span class="rating" th:text="${programme.moyenne} + '★'"></span>
                 <form action="/Programs/deleteProgramme" method="POST">
-                    <input type="hidden" name="programmeId" th:value="${programmeWithActivite.programmesId}">
+                    <input type="hidden" name="programmeId" th:value="${programme.programmeId}">
                     <button type="submit" class="btn delete_btn">Supprimer</button>
                 </form>
             </div>
 
             <!-- Activités -->
-            <div class="activities_container" th:if="${not #lists.isEmpty(programmeWithActivite.activites)}">
+            <div class="activities_container" th:if="${not #lists.isEmpty(programme.activites)}">
                 <h4>Activités associées</h4>
                 <div class="activity_list">
-                    <div class="activity_item" th:each="activite : ${programmeWithActivite.activites}">
-                        <a th:text="${activite.nom}" th:href="@{/Activity(id=${activite.activiteId})}" class="activity_link"></a>
+                    <div class="activity_item" th:each="activite : ${programme.activites}">
+                        <a th:text="${activite.activite.nom}" th:href="@{/Activity(id=${activite.activite.activiteId})}" class="activity_link"></a>
                         <form action="/Programs/deleteActiviteFromProgramme" method="POST">
-                            <input type="hidden" name="activiteId" th:value="${activite.activiteId}">
-                            <input type="hidden" name="programmeId" th:value="${programmeWithActivite.programmesId}">
+                            <input type="hidden" name="activiteId" th:value="${activite.activite.activiteId}">
+                            <input type="hidden" name="programmeId" th:value="${programme.programmeId}">
                             <button type="submit" class="delete_icon">×</button>
                         </form>
                     </div>

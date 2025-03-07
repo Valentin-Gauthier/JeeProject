@@ -9,14 +9,21 @@ public class Utilisateur_Pathologie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private long utilisateurId;
-    private long pathologieId;
+
+    @ManyToOne
+    @JoinColumn(name = "utilisateurId", nullable = false)
+    private Utilisateur utilisateur;
+
+    @ManyToOne
+    @JoinColumn(name = "pathologieId", nullable = false)
+    private Pathologie pathologie;
+
 
     public long getId() { return id; }
-    public long getUtilisateurId() { return utilisateurId; }
-    public long getPathologieId() { return pathologieId; }
+    public Utilisateur getUtilisateur() { return utilisateur; }
+    public Pathologie getPathologie() { return pathologie; }
 
     public void setId(long id) { this.id = id; }
-    public void setUtilisateurId(long id) { this.utilisateurId = id; }
-    public void setPathologieId(long id) { this.pathologieId = id; }
+    public void setUtilisateur(Utilisateur utilisateur) { this.utilisateur = utilisateur; }
+    public void setPathologie(Pathologie pathologie) { this.pathologie = pathologie; }
 }

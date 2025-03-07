@@ -44,19 +44,19 @@
         <div class="activities_grid" th:if="${not #lists.isEmpty(activites)}">
             <div class="activities_card" th:each="activite : ${activites}">
                 <div class="top_card">
-                    <h3 th:text="${activite.activite.nom}"></h3>
+                    <h3 th:text="${activite.nom}"></h3>
                     <span class="rating" th:text="${activite.moyenne} + '★'"></span>
                 </div>
-                <p class="description" th:text="${#strings.abbreviate(activite.activite.description, 100)}"></p>
-                <p class="address" th:text="${activite.activite.address}"></p>
+                <p class="description" th:text="${#strings.abbreviate(activite.description, 100)}"></p>
+                <p class="address" th:text="${activite.address}"></p>
 
                 <!-- affichage des pathologies -->
                 <div class="pathologies_list" th:if="${not #lists.isEmpty(activite.pathologies)}">
-                    <span class="pathology_tag" th:each="pathologie : ${activite.pathologies}" th:text="${pathologie.nom}"></span>
+                    <span class="pathology_tag" th:each="pathologie : ${activite.pathologies}" th:text="${pathologie.pathologie.nom}"></span>
                 </div>
                 <!-- Liens  -->
                 <div class="card_actions">
-                    <a th:href="@{/Activity(id=${activite.activite.activiteId})}" class="btn details_btn">Voir détails</a>
+                    <a th:href="@{/Activity(id=${activite.activiteId})}" class="btn details_btn">Voir détails</a>
                 </div>
 
             </div>

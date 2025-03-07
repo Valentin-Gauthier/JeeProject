@@ -1,7 +1,7 @@
-package com.JEE_Project.JEE_Project.Controllers;
+package com.JEE_Project.JEE_Project.Controller;
 
+import com.JEE_Project.JEE_Project.Models.Activite;
 import com.JEE_Project.JEE_Project.Services.ServiceActivite;
-import com.JEE_Project.JEE_Project.Utils.ActiviteWithPathologies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,8 +20,10 @@ public class ControllerHome {
 
     @GetMapping({"", "/Search"})
     public String afficherHome(@RequestParam(value = "recherche", defaultValue = "") String recherche, Model model) {
-        List<ActiviteWithPathologies> activites = serviceActivite.findActivites(recherche);
+
+        List<Activite> activites = serviceActivite.getActivitesFromSearch(recherche);
         model.addAttribute("activites", activites);
+
         return "Home";
     }
 }

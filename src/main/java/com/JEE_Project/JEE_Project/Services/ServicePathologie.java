@@ -1,6 +1,7 @@
 package com.JEE_Project.JEE_Project.Services;
 
 import com.JEE_Project.JEE_Project.Models.Pathologie;
+import com.JEE_Project.JEE_Project.Models.Utilisateur;
 import com.JEE_Project.JEE_Project.Repositories.RepoPathologie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,14 +17,9 @@ public class ServicePathologie {
     @Autowired
     private RepoPathologie repoPathologie;
 
-    // Recuperer les Pathologies associé à un Utilisateur
-    public List<Pathologie> getPahtologiesByUtilisateurId(long id){
-        return repoPathologie.findPathologiesByUtilisateurId(id);
-    }
-
-    // Recuperer une Pathologie grâce à son Id
-    public Pathologie getPathologiesById(long id) {
-        return repoPathologie.findPathologiesByPathologieId(id);
+    // Recuperer une Pathologie avec son Id
+    public Pathologie getPathologie(long pathologieId) {
+        return repoPathologie.findPathologiesByPathologieId(pathologieId);
     }
 
     // Recuperer les 5 Pathologies qui correspond à la recherche
@@ -34,4 +30,8 @@ public class ServicePathologie {
         return page.getContent();
     }
 
+    // Recuperer les Pathologies associé à un Utilisateur
+    public List<Pathologie> getPahtologiesByUtilisateurId(Utilisateur utilisateur) {
+        return repoPathologie.findPathologiesFromUtilisateur(utilisateur);
+    }
 }

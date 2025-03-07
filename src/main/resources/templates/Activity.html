@@ -32,15 +32,15 @@
         <div class="activities_grid" th:if="${not #lists.isEmpty(activite)}">
             <div class="activities_card">
                 <div class="top_card">
-                    <h1 th:text="${activite.activite.nom}"></h1>
+                    <h1 th:text="${activite.nom}"></h1>
                     <span class="rating_note" th:text="${activite.moyenne} + '★'"></span>
                 </div>
-                <p class="description" th:text="${activite.activite.description}"></p>
-                <p class="address" th:text="${activite.activite.address}"></p>
+                <p class="description" th:text="${activite.description}"></p>
+                <p class="address" th:text="${activite.address}"></p>
 
                 <!-- affichage des pathologies -->
                 <div class="pathologies_list" th:if="${not #lists.isEmpty(activite.pathologies)}">
-                    <span class="pathology_tag" th:each="pathologie : ${activite.pathologies}" th:text="${pathologie.nom}"></span>
+                    <span class="pathology_tag" th:each="pathologie : ${activite.pathologies}" th:text="${pathologie.pathologie.nom}"></span>
                 </div>
 
                 <div class="buttons">
@@ -66,16 +66,16 @@
         <div class="popup_content">
             <span class="close" onclick="closePopup()">&times;</span>
             <h3>Ajouter cette activité à un programme</h3>
-            <div th:if="${not #lists.isEmpty(programmes)}">
+            <div th:if="${session.utilisateur != null && not #lists.isEmpty(session.utilisateur.programmes)}">
                 <form action="/Activity/addActiviteForProgramme" method="POST">
-                    <input type="hidden" name="activiteId" th:value="${activite.activite.activiteId}">
+                    <input type="hidden" name="activiteId" th:value="${activite.activiteId}">
                     <select name="programmeId">
-                        <option th:each="programme : ${programmes}" th:value="${programme.programmesId}" name="programmeId" th:text="${'Programme ' + programme.programmesId}"></option>
+                        <option th:each="programme : ${session.utilisateur.programmes}" th:value="${programme.programmeId}" name="programmeId" th:text="${'Programme ' + programme.programmeId}"></option>
                     </select>
                     <button type="submit">Ajouter</button>
                 </form>
             </div>
-            <p th:if="${#lists.isEmpty(programmes)}">Vous n'avez aucun programme...</p>
+            <p th:if="${session.utilisateur != null && #lists.isEmpty(session.utilisateur.programmes)}">Vous n'avez aucun programme...</p>
         </div>
     </div>
 
@@ -84,8 +84,9 @@
         <div class="popup_content">
             <span class="close" onclick="closeRatingPopup()">&times;</span>
             <h3>Noter cette activité</h3>
+            <p th:if="${evaluation != null}" th:text=" 'Votre note : ' + ${evaluation.getNote()} + '★'"></p>
             <form action="/Activity/addEvaluation" method="POST">
-                <input type="hidden" name="activiteId" th:value="${activite.activite.activiteId}">
+                <input type="hidden" name="activiteId" th:value="${activite.activiteId}">
                 <div class="rating_input">
                     <input type="number" name="note" step="0.1" min="0" max="5" placeholder="Entre 0 et 5" required>
                     <span>/5</span>

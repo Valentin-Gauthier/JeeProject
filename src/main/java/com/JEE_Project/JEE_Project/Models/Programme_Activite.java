@@ -9,21 +9,27 @@ public class Programme_Activite {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private long programmeId;
-    private long activiteId;
+
+    @ManyToOne
+    @JoinColumn(name = "programmeId", nullable = false)
+    private Programme programme;
+
+    @ManyToOne
+    @JoinColumn(name = "activiteId", nullable = false)
+    private Activite activite;
 
     public Programme_Activite() {}
 
-    public Programme_Activite(long programmeId, long activiteId) {
-        this.programmeId = programmeId;
-        this.activiteId = activiteId;
+    public Programme_Activite(Programme programme, Activite activite) {
+        this.programme = programme;
+        this.activite = activite;
     }
 
     public long getId() { return id; }
-    public long getProgrammeId() { return programmeId; }
-    public long getActiviteId() { return activiteId; }
+    public Programme getProgramme() { return programme; }
+    public Activite getActivite() { return activite; }
 
     public void setId(long id) { this.id = id; }
-    public void setProgrammeId(long programmeId) { this.programmeId = programmeId; }
-    public void setActiviteId(long activiteId) { this.activiteId = activiteId; }
+    public void setProgramme(Programme programme) { this.programme = programme; }
+    public void setActivite(Activite activite) { this.activite = activite; }
 }

@@ -1,5 +1,7 @@
 package com.JEE_Project.JEE_Project.Services;
 
+import com.JEE_Project.JEE_Project.Models.Activite;
+import com.JEE_Project.JEE_Project.Models.Programme;
 import com.JEE_Project.JEE_Project.Models.Programme_Activite;
 import com.JEE_Project.JEE_Project.Repositories.RepoProgramme_Activite;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +14,15 @@ public class ServiceProgramme_Activite {
     @Autowired
     private RepoProgramme_Activite repoProgramme_Activite;
 
+
     @Transactional
-    public void deleteActiviteFromProgramme(long programmeId, long activiteId) {
-        repoProgramme_Activite.deleteActiviteFromProgramme(programmeId, activiteId);
+    public void deleteActiviteFromProgramme(Programme programme, Activite activite) {
+        repoProgramme_Activite.deleteActiviteFromProgramme(programme, activite);
     }
 
     @Transactional
-    public void deleteAllActiviteFromProgramme(long programmeId) {
-        repoProgramme_Activite.deleteAllActiviteFromProgramme(programmeId);
+    public void deleteAllActiviteFromProgramme(Programme programme) {
+        repoProgramme_Activite.deleteAllActiviteFromProgramme(programme);
     }
 
     @Transactional

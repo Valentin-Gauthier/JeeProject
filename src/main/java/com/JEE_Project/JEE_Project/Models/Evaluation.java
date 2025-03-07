@@ -9,24 +9,32 @@ public class Evaluation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long evaluationId;
-    private long utilisateurId;
-    private long activiteId;
+
+    @ManyToOne
+    @JoinColumn(name = "utilisateurId",nullable = false)
+    private Utilisateur utilisateur;
+
+    @ManyToOne
+    @JoinColumn(name = "activiteId", nullable = false)
+    private Activite activite;
+
     private double note;
 
     public Evaluation() {}
-    public Evaluation(long utilisateurId, long activiteId, double note) {
-        this.utilisateurId = utilisateurId;
-        this.activiteId = activiteId;
+
+    public Evaluation(Utilisateur utilisateur, Activite activite, double note) {
+        this.utilisateur = utilisateur;
+        this.activite = activite;
         this.note = note;
     }
 
     public long getEvaluationId() { return evaluationId; }
-    public long getUtilisateurId() { return utilisateurId; }
-    public long getActiviteId() { return activiteId; }
+    public Utilisateur getUtilisateur() { return utilisateur; }
+    public Activite getActivite() { return activite; }
     public double getNote() { return note; }
 
     public void setEvaluationId(long evaluationId) { this.evaluationId = evaluationId; }
-    public void setUtilisateurId(long utilisateurId) { this.utilisateurId = utilisateurId; }
-    public void setActiviteId(long activiteId) { this.activiteId = activiteId; }
+    public void setUtilisateur(Utilisateur utilisateur) { this.utilisateur = utilisateur; }
+    public void setActivite(Activite activite) { this.activite = activite; }
     public void setNote(double note) { this.note = note; }
 }

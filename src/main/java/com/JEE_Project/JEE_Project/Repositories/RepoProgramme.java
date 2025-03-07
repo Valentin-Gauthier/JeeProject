@@ -1,6 +1,7 @@
 package com.JEE_Project.JEE_Project.Repositories;
 
 import com.JEE_Project.JEE_Project.Models.Programme;
+import com.JEE_Project.JEE_Project.Models.Utilisateur;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,13 +13,15 @@ import java.util.List;
 @Repository
 public interface RepoProgramme extends JpaRepository<Programme, Long> {
 
+    // Recuperer les Programme d'un Utilisateur
+    @Query("SELECT p FROM Programme p LEFT JOIN FETCH p.activites WHERE p.utilisateur = :utilisateur")
+    List<Programme> findProgrammes(@Param("utilisateur")Utilisateur utilisateur);
+
     // Supprime un programme
     @Modifying
-    @Query("DELETE FROM Programme WHERE programmeId = :programmeId")
-    void deleteProgramme(@Param("programmeId") long programmeId);
+    @Query("DELETE FROM Programme p WHERE p = :programme")
+    void deleteProgramme(@Param("programme") Programme programme);
 
-    // Recuperer les programmes de l'Utilisateur avec les activites
-    @Query("SELECT p, a FROM Programme p LEFT JOIN Programme_Activite pa ON p.programmeId = pa.programmeId LEFT JOIN Activite a ON pa.activiteId = a.activiteId WHERE p.utilisateurId = :id")
-    List<Object[]> findProgrammeWithActivite(@Param("id") long id);
-
+    // Recuperer un Programme avec son Id
+    Programme findProgrammeByProgrammeId(long programmeId);
 }

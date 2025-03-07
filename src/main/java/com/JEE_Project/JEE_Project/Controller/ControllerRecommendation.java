@@ -1,10 +1,11 @@
-package com.JEE_Project.JEE_Project.Controllers;
+package com.JEE_Project.JEE_Project.Controller;
 
+import com.JEE_Project.JEE_Project.Models.Activite;
+import com.JEE_Project.JEE_Project.Models.Activite_Pathologie;
 import com.JEE_Project.JEE_Project.Models.Pathologie;
 import com.JEE_Project.JEE_Project.Models.Utilisateur;
 import com.JEE_Project.JEE_Project.Services.ServiceActivite;
 import com.JEE_Project.JEE_Project.Services.ServicePathologie;
-import com.JEE_Project.JEE_Project.Utils.ActiviteWithPathologies;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,23 +32,24 @@ public class ControllerRecommendation {
         // Recuperer les pathologies de l'Utilisateur
         Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
 
-        List<Pathologie> utilisateurPathologies = servicePathologie.getPahtologiesByUtilisateurId(utilisateur.getUtilisateurId());
+        List<Pathologie> utilisateurPathologies = servicePathologie.getPahtologiesByUtilisateurId(utilisateur);
 
         // Rechercher les activités pour calculer un score pour la recommendation
-        List<ActiviteWithPathologies> allActivites = serviceActivite.findActivites("");
-        Map<ActiviteWithPathologies, Integer> activitesScore = new HashMap<>();
-        for(ActiviteWithPathologies activite : allActivites) {
+        List<Activite> allActivites = serviceActivite.getActivitesFromSearch("");
+        Map<Activite, Integer> activitesScore = new HashMap<>();
+        for(Activite activite : allActivites) {
             int score = 0;
-            for(Pathologie activitePathologie : activite.getPathologies()) {
-                if(utilisateurPathologies.contains(activitePathologie)) {
-                    score += 1;
+            for(Activite_Pathologie ap : activite.getPathologies()) {
+                if(utilisateurPathologies.contains(ap.getPathologie())) {
+                    // rajoute la moyenne
+                    score += (int) (1 + ap.getActivite().getMoyenne());
                 }
             }
             activitesScore.put(activite, score);
         }
 
         // Trier les activites en fonction des scores les plus eleves
-        List<ActiviteWithPathologies> recommendations = allActivites.stream()
+        List<Activite> recommendations = allActivites.stream()
                 // garde uniquement les activitées ayant un score > 0
                 .filter(a -> activitesScore.get(a) > 0)
                 // classe en ordre decroissant
